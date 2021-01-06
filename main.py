@@ -15,21 +15,19 @@ all_states = states_data.state.to_list()
 
 
 right_guesses = []
-states_to_learn = []
-
 
 
 while len(right_guesses) < 50:
     user_answer = screen.textinput(title=f"States correct {len(right_guesses)}/{len(states_data.state)}", prompt="Guess a state: ").title()
 
+
     if user_answer == "Exit":
-        for item in right_guesses:
-            if item in all_states:
-                all_states.remove(item)
+        states_to_learn = [all_states.remove(guess) for guess in right_guesses if guess in all_states]
         states_to_learn.append(all_states)
         df = pd.DataFrame(states_to_learn)
         df.to_csv("states_to_learn.csv")
         break
+
 
     for state in states_data.state:
         if user_answer == state:
